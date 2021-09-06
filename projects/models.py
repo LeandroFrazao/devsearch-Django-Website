@@ -19,7 +19,6 @@ class Project(models.Model):
         return self.title
 
 
-
 class Review(models.Model):
     VOTE_TYPE = (
         ('up','Up Vote'),
