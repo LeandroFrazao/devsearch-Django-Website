@@ -1,0 +1,180 @@
+[33mcommit 8aab58b76dd5a8cb71ccc12bb1391d04be04c4b5[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Leandro Frazao <developer.lrf@gmail.com>
+Date:   Wed Sep 8 14:30:57 2021 +0100
+
+    user login, logout and flash messages
+
+[1mdiff --git a/projects/views.py b/projects/views.py[m
+[1mindex 9038e03..43d6ba6 100644[m
+[1m--- a/projects/views.py[m
+[1m+++ b/projects/views.py[m
+[36m@@ -1,4 +1,5 @@[m
+ from django.shortcuts import render, redirect[m
+[32m+[m[32mfrom django.contrib.auth.decorators import login_required[m
+ from .models import Project[m
+ from .forms import ProjectForm[m
+ [m
+[36m@@ -17,6 +18,7 @@[m [mdef project(request, pk):[m
+     context = {'project': projectObj}[m
+     return render(request,'projects/single-project.html', context )[m
+ [m
+[32m+[m[32m@login_required(login_url="login")[m
+ def createProject(request):[m
+     form = ProjectForm()[m
+ [m
+[36m@@ -29,7 +31,7 @@[m [mdef createProject(request):[m
+     context={'form':form}[m
+     return render(request, 'projects/project_form.html', context)[m
+ [m
+[31m-[m
+[32m+[m[32m@login_required(login_url="login")[m
+ def updateProject(request, pk):[m
+     project = Project.objects.get(id=pk)[m
+     form = ProjectForm(instance= project)[m
+[36m@@ -43,6 +45,7 @@[m [mdef updateProject(request, pk):[m
+     context={'form':form}[m
+     return render(request, 'projects/project_form.html', context)[m
+ [m
+[32m+[m[32m@login_required(login_url="login")[m
+ def deleteProject(request, pk):[m
+     project = Project.objects.get(id=pk)[m
+ [m
+[1mdiff --git a/templates/main.html b/templates/main.html[m
+[1mindex 09672c5..1dcfa67 100644[m
+[1m--- a/templates/main.html[m
+[1m+++ b/templates/main.html[m
+[36m@@ -17,11 +17,22 @@[m
+   <link rel="stylesheet" href="{% static 'styles/app.css' %}" />[m
+ [m
+   <title>DevSearch - Connect with Developers!</title>[m
+[32m+[m
+ </head>[m
+ [m
+ <body>[m
+   {% include 'navbar.html' %}[m
+[32m+[m
+[32m+[m[32m  {% if messages %}[m
+[32m+[m[32m  <ul class="messages">[m
+[32m+[m[32m    {% for message in messages %}[m
+[32m+[m[32m    <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>[m
+[32m+[m[32m    {% endfor %}[m
+[32m+[m[32m  </ul>[m
+[32m+[m[32m  {% endif %}[m
+[32m+[m
+   {% block content %}[m
+[32m+[m
+   {% endblock %}[m
+   <p>FOOTER</p>[m
+ </body>[m
+[1mdiff --git a/templates/navbar.html b/templates/navbar.html[m
+[1mindex f14a544..6df3180 100644[m
+[1m--- a/templates/navbar.html[m
+[1m+++ b/templates/navbar.html[m
+[36m@@ -17,10 +17,13 @@[m
+                 <li class="header__menuItem"><a href="{% url 'projects' %}">Projects</a></li>[m
+                 <li class="header__menuItem"><a href="">Inbox</a></li>[m
+                 <li class="header__menuItem"><a href="">My Account</a></li>[m
+[31m-                <li class="header__menuItem"><a href="{% url 'create-project' %}">Add Project</a>[m
+[31m-                </li>[m
+ [m
+[31m-                <li class="header__menuItem"><a href="" class="btn btn--sub">Login/Sign Up</a></li>[m
+[32m+[m[32m                {% if request.user.is_authenticated%}[m
+[32m+[m[32m                <li class="header__menuItem"><a href="{% url 'create-project' %}">Add Project</a></li>[m
+[32m+[m[32m                <li class="header__menuItem"><a href="{% url 'logout' %}" class="btn btn--sub">Logout</a></li>[m
+[32m+[m[32m                {% else %}[m
+[32m+[m[32m                <li class="header__menuItem"><a href="{% url 'login' %}" class="btn btn--sub">Login/Sign Up</a></li>[m
+[32m+[m[32m                {% endif %}[m
+             </ul>[m
+         </nav>[m
+     </div>[m
+[1mdiff --git a/users/templates/users/login_register.html b/users/templates/users/login_register.html[m
+[1mnew file mode 100644[m
+[1mindex 0000000..348bbfd[m
+[1m--- /dev/null[m
+[1m+++ b/users/templates/users/login_register.html[m
+[36m@@ -0,0 +1,12 @@[m
+[32m+[m[32m{% extends 'main.html' %}[m
+[32m+[m
+[32m+[m[32m{% block content %}[m
+[32m+[m
+[32m+[m[32m<form action="{% url 'login' %}" method="Post">[m
+[32m+[m[32m    {% csrf_token  %}[m
+[32m+[m[32m    <input type="text" name="username" placeholder="Username" />[m
+[32m+[m[32m    <input type="password" name="password" placeholder="Enter password" />[m
+[32m+[m[32m    <input type="submit" value="Login" />[m
+[32m+[m[32m</form>[m
+[32m+[m
+[32m+[m[32m{% endblock %}[m
+\ No newline at end of file[m
+[1mdiff --git a/users/urls.py b/users/urls.py[m
+[1mindex ae68a40..1e3ce3e 100644[m
+[1m--- a/users/urls.py[m
+[1m+++ b/users/urls.py[m
+[36m@@ -3,6 +3,12 @@[m [mfrom . import views[m
+ [m
+ [m
+ urlpatterns =[[m
+[32m+[m
+[32m+[m[32m    path('login/', views.loginUser, name="login"),[m
+[32m+[m[32m    path('logout/', views.logoutUser, name='logout'),[m
+[32m+[m
+[32m+[m
+[32m+[m
+     path('', views.profiles, name="profiles"),[m
+[31m-    path('profile/<str:pk>', views.userProfile, name='user-profile'),[m
+[32m+[m[32m    path('profile/<str:pk>', views.userProfile, name="user-profile"),[m
+ ][m
+\ No newline at end of file[m
+[1mdiff --git a/users/views.py b/users/views.py[m
+[1mindex 9eab79b..4493812 100644[m
+[1m--- a/users/views.py[m
+[1m+++ b/users/views.py[m
+[36m@@ -1,7 +1,47 @@[m
+[31m-from django.shortcuts import render[m
+[32m+[m[32mfrom django.shortcuts import render, redirect[m
+[32m+[m[32mfrom django.contrib.auth import login, authenticate, logout[m
+[32m+[m[32mfrom django.contrib.auth.decorators import login_required[m
+[32m+[m[32mfrom django.contrib import messages[m
+[32m+[m[32mfrom django.contrib.auth.models import User[m
+ from .models import Profile[m
+ # Create your views here.[m
+ [m
+[32m+[m[32mdef loginUser(request):[m
+[32m+[m
+[32m+[m[32m    if request.user.is_authenticated:[m
+[32m+[m[32m        return redirect( 'profiles')[m
+[32m+[m[41m    [m
+[32m+[m[32m    if request.method =='POST':[m
+[32m+[m[32m        print(request.POST)[m
+[32m+[m
+[32m+[m[32m        username = request.POST['username'][m
+[32m+[m[32m        password = request.POST['password'][m
+[32m+[m
+[32m+[m[32m        try:[m
+[32m+[m[32m            user = User.objects.get(username = username)[m
+[32m+[m[32m        except:[m
+[32m+[m[32m           messages.error(request,'Username does not exist')[m
+[32m+[m[41m        [m
+[32m+[m[32m        user = authenticate(request, username = username, password = password)[m
+[32m+[m
+[32m+[m[32m        if user is not None :[m
+[32m+[m[32m            login(request, user)[m
+[32m+[m[32m            return redirect('profiles')[m
+[32m+[m[32m        else:[m
+[32m+[m[32m            messages.error(request, 'Username or passaword is incorrect')[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    return render(request, 'users/login_register.html')[m
+[32m+[m
+[32m+[m
+[32m+[m[32mdef logoutUser(request):[m
+[32m+[m[32m    logout(request)[m
+[32m+[m[32m    messages.error(request,'User was logged out')[m
+[32m+[m[32m    return redirect('login')[m
+[32m+[m
+[32m+[m
+ def profiles(request):[m
+     profiles = Profile.objects.all()[m
+     context = {'profiles': profiles}[m

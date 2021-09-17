@@ -1,4 +1,15 @@
+.alertList {
+  position: absolute;
+}
+.alert:focus :last-child {
+  border: thin solid black;
+  z-index: 99;
+}
+
 .alert {
+  position: relative;
+
+  opacity: 0.8;
   display: inline-flex;
   gap: 3rem;
   justify-content: space-between;
@@ -8,6 +19,9 @@
   border: 1px solid var(--color-white-light);
   margin-bottom: 1rem;
   margin-right: 1rem;
+  /*  top: 30%;
+  left: 40%; */
+  z-index: 80;
 }
 
 .alert,
@@ -31,12 +45,14 @@
 }
 
 .alert > .alert__close {
+  display: inline-flex;
   background: transparent;
   cursor: pointer;
   border: none;
   outline: transparent;
   font-size: 2rem;
   transition: var(--generic-transition);
+  z-index: 99;
 }
 
 .alert > .alert__close:hover {
