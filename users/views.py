@@ -11,6 +11,10 @@ def loginUser(request):
     page = 'login'
     context ={'page':page}
 
+  ##show all users
+  ##  us = User.objects.all()
+  ##  print(us)
+  
     if request.user.is_authenticated:
         return redirect( 'profiles')
     
