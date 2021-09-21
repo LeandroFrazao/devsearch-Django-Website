@@ -64,14 +64,16 @@
 
 
                         <h3 class="devInfo__subtitle">Other Skills</h3>
-                        {% for skill in otherSkills %}
+
                         <div class="devInfo__otherSkills">
+                            {% for skill in otherSkills %}
                             <span class="tag tag--pill tag--sub tag--lg">
                                 <small>{{skill}}</small>
                             </span>
 
+
+                            {% endfor %}
                         </div>
-                        {% endfor %}
                     </div>
                 </div>
                 <div class="devInfo">

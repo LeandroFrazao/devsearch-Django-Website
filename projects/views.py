@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Project
+from .utils import searchProjects
 from .forms import ProjectForm
 from django.contrib import messages
 
@@ -8,12 +9,14 @@ from django.http import HttpResponse
 
 def projects(request):
     #return HttpResponse("Here are our projects")
-    projects = Project.objects.all()
+
+    projects, search_query = searchProjects(request)
+ 
 
     #exclude projects with userID null
     projects = projects.exclude(owner__isnull=True) 
     
-    context = {'projects': projects}
+    context = {'projects': projects, 'search_query':search_query}
     return render(request, 'projects/projects.html', context)
 
 def project(request, pk):
@@ -34,7 +37,7 @@ def createProject(request):
             project = form.save(commit=False)
             project.owner = profile
             project.save()
-            return redirect('projects')
+            return redirect('account')
 
     context={'form':form}
     return render(request, 'projects/project_form.html', context)
@@ -46,7 +49,7 @@ def updateProject(request, pk):
         project = profile.project_set.get(id=pk )
     except:
         messages.error(request,"Project not found")
-        return redirect('projects')
+        return redirect('account')
     
     form = ProjectForm(instance= project)
 
@@ -66,11 +69,11 @@ def deleteProject(request, pk):
         project = profile.project_set.get(id=pk )
     except:
         messages.error(request,"Project not found")
-        return redirect('projects')
+        return redirect('account')
 
     if request.method == 'POST':
         project.delete()
-        return redirect('projects')
+        return redirect('account')
 
     context={'object':project}
-    return render(request, 'projects/delete_template.html', context)
+    return render(request, 'delete_template.html', context)
