@@ -1,22 +1,26 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Project
-from .utils import searchProjects
-from .forms import ProjectForm
 from django.contrib import messages
 
+
+from .models import Project
+from .utils import searchProjects, paginateProjects
+from .forms import ProjectForm
 from django.http import HttpResponse
 
 def projects(request):
     #return HttpResponse("Here are our projects")
-
+    
+    #Search projects
     projects, search_query = searchProjects(request)
- 
-
     #exclude projects with userID null
     projects = projects.exclude(owner__isnull=True) 
+ 
+    #pagination projects
+    results = 3
+    custom_range, projects = paginateProjects(request, projects, results)
     
-    context = {'projects': projects, 'search_query':search_query}
+    context = {'projects': projects, 'search_query':search_query, 'custom_range':custom_range}
     return render(request, 'projects/projects.html', context)
 
 def project(request, pk):
