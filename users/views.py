@@ -15,12 +15,13 @@ def loginUser(request):
   ##show all users
   ##  us = User.objects.all()
   ##  print(us)
-  
+
+
     if request.user.is_authenticated:
         return redirect( 'profiles')
     
     if request.method =='POST':
-        print(request.POST)
+        #print(request.POST)
 
         username = request.POST['username'].lower()
         password = request.POST['password']
