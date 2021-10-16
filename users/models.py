@@ -2,6 +2,7 @@ from email.policy import default
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
+from django.conf import settings
 # Create your models here.
 
 
@@ -25,6 +26,17 @@ class Profile(models.Model):
 
     def __str__(self):
         return str( self.username)
+
+    class Meta:
+        ordering = ['created']
+
+    @property
+    def imageURL(self):
+        try:
+            url = self.profile_image.url
+        except:
+            url = settings.MEDIA_URL+"default.jpg"
+        return url
 
 
 class Skill(models.Model):
