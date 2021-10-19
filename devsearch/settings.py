@@ -15,7 +15,8 @@ import os
 from datetime import timedelta
 from telnetlib import STATUS
 
-from dotenv import find_dotenv, load_dotenv
+import cloudinary
+from dotenv import  load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,13 +42,15 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',
     'django.contrib.staticfiles',
-
+    'cloudinary',
     'projects.apps.ProjectsConfig',
     'users.apps.UsersConfig',
 
     'rest_framework',
     'corsheaders',
+    
 ]
 
 REST_FRAMEWORK = {
@@ -223,6 +226,13 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static'  #new django version
 
 ]
+
+CLOUDINARY_STORAGE={ 
+  'CLOUD_NAME':os.environ.get('CLOUD_NAME', None), 
+ 'API_KEY':  os.environ.get('CLOUDAPI_KEY', None) , 
+   'API_SECRET': os.environ.get('CLOUDAPI_SECRET', None) 
+}
+
 #added to send download images to a specific folder
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 MEDIA_ROOT = BASE_DIR / 'static/images'
@@ -232,29 +242,12 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-
-###requirements
-# asgiref                       3.4.1
-# Django                        3.2.6
-# django-cors-headers           3.10.0
-# djangorestframework           3.12.4
-# djangorestframework-simplejwt 4.8.0
-# Pillow                        8.3.2
-# pip                           21.3
-# psycopg2                      2.9.1
-# PyJWT                         2.1.0
-# python-dotenv                 0.19.1
-# pytz                          2021.1
-# setuptools                    57.4.0
-# sqlparse                      0.4.1
-# wheel                         0.37.0
-# whitenoise                    5.3.0
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
