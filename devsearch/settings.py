@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-(0plx*c2^j3xe_flv04oy^n&$mff0vzew^%altefhx@$%_o_g=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'devsearch-dj.herokuapp.com']
 
 
 # Application definition
@@ -251,3 +251,7 @@ STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+
+if os.getcwd()== '/app':
+    DEBUG = False
