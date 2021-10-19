@@ -14,6 +14,9 @@ from pathlib import Path
 import os
 from datetime import timedelta
 from telnetlib import STATUS
+
+from dotenv import find_dotenv, load_dotenv
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -124,18 +127,37 @@ WSGI_APPLICATION = 'devsearch.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASE_HOST_PASSWORD = os.environ.get('DBPASS', None)
+#load env var 
+#dotenv_path  to set the path of .env file
+load_dotenv(dotenv_path= os.path.join(BASE_DIR,'env','.env'))
+
+DATABASE_HOST_NAME = os.environ.get('DBHKNAME', None)
+DATABASE_HOST_USER = os.environ.get('DBHKUSER', None)
+DATABASE_HOST_PASS = os.environ.get('DBHKPASS', None)
+DATABASE_HOST_URL = os.environ.get('DBHKHOST', None)
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'devsearch',
-        'USER':'postgres',
-        'PASSWORD': DATABASE_HOST_PASSWORD,
-        'HOST':'localhost',
+        'NAME': DATABASE_HOST_NAME,
+        'USER':DATABASE_HOST_USER,
+        'PASSWORD': DATABASE_HOST_PASS,
+        'HOST':DATABASE_HOST_URL,
         'PORT':'5432',
     }
 }
+
+#DATABASE_HOST_PASS = os.environ.get('DBPASS', None)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'devsearch',
+#         'USER':'postgres',
+#         'PASSWORD': DATABASE_HOST_PASS,
+#         'HOST':'localhost',
+#         'PORT':'5432',
+#     }
+# }
 
 # DATABASES = {
 #     'default': {
@@ -208,7 +230,31 @@ MEDIA_ROOT = BASE_DIR / 'static/images'
 #added to set the folder of static files when in production
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# Simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+###requirements
+# asgiref                       3.4.1
+# Django                        3.2.6
+# django-cors-headers           3.10.0
+# djangorestframework           3.12.4
+# djangorestframework-simplejwt 4.8.0
+# Pillow                        8.3.2
+# pip                           21.3
+# psycopg2                      2.9.1
+# PyJWT                         2.1.0
+# python-dotenv                 0.19.1
+# pytz                          2021.1
+# setuptools                    57.4.0
+# sqlparse                      0.4.1
+# wheel                         0.37.0
+# whitenoise                    5.3.0
