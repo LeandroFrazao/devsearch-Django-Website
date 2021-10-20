@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-(0plx*c2^j3xe_flv04oy^n&$mff0vzew^%altefhx@$%_o_g='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'devsearch-dj.herokuapp.com']
 
@@ -41,9 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-   'cloudinary_storage',
+    'cloudinary_storage',
     'django.contrib.staticfiles',
-     
     'cloudinary',
     'projects.apps.ProjectsConfig',
     'users.apps.UsersConfig',
@@ -233,7 +232,7 @@ CLOUDINARY_STORAGE={
 'CLOUD_NAME':os.environ.get('CLOUD_NAME', None), 
 'API_KEY':  os.environ.get('CLOUDAPI_KEY', None) , 
 'API_SECRET': os.environ.get('CLOUDAPI_SECRET', None),
-'STATICFILES_MANIFEST_ROOT': os.path.join(BASE_DIR, 'my-manifest-directory') 
+'STATICFILES_MANIFEST_ROOT': os.path.join(BASE_DIR, 'manifest') 
     }
 
 #added to send download images to a specific folder
@@ -241,20 +240,20 @@ CLOUDINARY_STORAGE={
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 
 #added to set the folder of static files when in production
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 
 
-STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
 if os.getcwd()== '/app':
