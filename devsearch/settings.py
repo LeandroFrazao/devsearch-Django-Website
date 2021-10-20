@@ -227,11 +227,11 @@ STATICFILES_DIRS = [
 
 ]
 
-CLOUDINARY_STORAGE={ 
-'CLOUD_NAME':os.environ.get('CLOUD_NAME', None), 
-'API_KEY':  os.environ.get('CLOUDAPI_KEY', None) , 
-'API_SECRET': os.environ.get('CLOUDAPI_SECRET', None) 
-}
+# CLOUDINARY_STORAGE={ 
+# 'CLOUD_NAME':os.environ.get('CLOUD_NAME', None), 
+# 'API_KEY':  os.environ.get('CLOUDAPI_KEY', None) , 
+# 'API_SECRET': os.environ.get('CLOUDAPI_SECRET', None) 
+# }
 
 #added to send download images to a specific folder
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
