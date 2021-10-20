@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-(0plx*c2^j3xe_flv04oy^n&$mff0vzew^%altefhx@$%_o_g='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'devsearch-dj.herokuapp.com']
 
@@ -41,8 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'cloudinary_storage',
+   'cloudinary_storage',
     'django.contrib.staticfiles',
+     
     'cloudinary',
     'projects.apps.ProjectsConfig',
     'users.apps.UsersConfig',
@@ -223,7 +224,7 @@ MEDIA_URL = '/images/'
 
 #added to find static folder
 STATICFILES_DIRS = [
-    BASE_DIR, 'static'  #old Django version
+    BASE_DIR/ 'static'  #old Django version
     #BASE_DIR / 'static'  #new django version
 
 ]
@@ -244,9 +245,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
 
+
+STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
