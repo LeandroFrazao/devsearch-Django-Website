@@ -224,7 +224,7 @@ MEDIA_URL = '/images/'
 
 #added to find static folder
 STATICFILES_DIRS = [
-    (BASE_DIR, 'static'),  #old Django version
+    BASE_DIR/ 'static'  #old Django version
     #BASE_DIR / 'static'  #new django version
 
 ]
