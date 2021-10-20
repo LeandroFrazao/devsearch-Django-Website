@@ -40,11 +40,9 @@ class Profile(models.Model):
         except:
             if os.getcwd()== '/app':
                 url = 	"http://res.cloudinary.com/"+settings.CLOUDINARY_STORAGE.get('CLOUD_NAME')+"/images/"+"default.jpg"
-                print(url)
-            else:
-                url = 	"http://res.cloudinary.com/"+settings.CLOUDINARY_STORAGE.get('CLOUD_NAME')+"/images/"+"default.jpg"
-                print(url)
-                #url = settings.MEDIA_URL+"default.jpg"
+              
+            else:        
+                url = settings.MEDIA_URL+"default.jpg"
            
         return url
 

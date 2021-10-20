@@ -4,6 +4,7 @@ from django.db import models
 import uuid
 from users.models import Profile
 from django.conf import settings
+import os
 
 # Create your models here.
 
@@ -35,7 +36,11 @@ class Project(models.Model):
         try:
             url = self.featured_image.url
         except:
-            url = settings.MEDIA_URL+"default.jpg"
+            if os.getcwd()== '/app':
+                url = 	"http://res.cloudinary.com/"+settings.CLOUDINARY_STORAGE.get('CLOUD_NAME')+"/images/"+"default.jpg"
+              
+            else:        
+                url = settings.MEDIA_URL+"default.jpg"
         return url
 
     @property
