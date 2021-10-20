@@ -132,23 +132,25 @@ WSGI_APPLICATION = 'devsearch.wsgi.application'
 
 #load env var 
 #dotenv_path  to set the path of .env file
-load_dotenv(dotenv_path= os.path.join(BASE_DIR,'env','.env'))
 
-DATABASE_HOST_NAME = os.environ.get('DBHKNAME', None)
-DATABASE_HOST_USER = os.environ.get('DBHKUSER', None)
-DATABASE_HOST_PASS = os.environ.get('DBHKPASS', None)
-DATABASE_HOST_URL = os.environ.get('DBHKHOST', None)
+if os.getcwd()!= '/app':
+    load_dotenv(dotenv_path= os.path.join(BASE_DIR,'env','.env'))
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': DATABASE_HOST_NAME,
-        'USER':DATABASE_HOST_USER,
-        'PASSWORD': DATABASE_HOST_PASS,
-        'HOST':DATABASE_HOST_URL,
-        'PORT':'5432',
+    DATABASE_HOST_NAME = os.environ.get('DBHKNAME', None)
+    DATABASE_HOST_USER = os.environ.get('DBHKUSER', None)
+    DATABASE_HOST_PASS = os.environ.get('DBHKPASS', None)
+    DATABASE_HOST_URL = os.environ.get('DBHKHOST', None)
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': DATABASE_HOST_NAME,
+            'USER':DATABASE_HOST_USER,
+            'PASSWORD': DATABASE_HOST_PASS,
+            'HOST':DATABASE_HOST_URL,
+            'PORT':'5432',
+        }
     }
-}
 
 #DATABASE_HOST_PASS = os.environ.get('DBPASS', None)
 # DATABASES = {
@@ -226,12 +228,12 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static'  #new django version
 
 ]
-
-# CLOUDINARY_STORAGE={ 
-# 'CLOUD_NAME':os.environ.get('CLOUD_NAME', None), 
-# 'API_KEY':  os.environ.get('CLOUDAPI_KEY', None) , 
-# 'API_SECRET': os.environ.get('CLOUDAPI_SECRET', None) 
-# }
+if os.getcwd()!= '/app':
+    CLOUDINARY_STORAGE={ 
+    'CLOUD_NAME':os.environ.get('CLOUD_NAME', None), 
+    'API_KEY':  os.environ.get('CLOUDAPI_KEY', None) , 
+    'API_SECRET': os.environ.get('CLOUDAPI_SECRET', None) 
+    }
 
 #added to send download images to a specific folder
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
