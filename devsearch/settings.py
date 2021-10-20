@@ -254,5 +254,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
-# if os.getcwd()== '/app':
-#     DEBUG = False
+if os.getcwd()== '/app':
+    DEBUG = False
