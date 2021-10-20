@@ -1,1 +1,1 @@
-web: gunicorn -w 4 devsearch:app
+web: gunicorn devsearch.wsgi
