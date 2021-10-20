@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-(0plx*c2^j3xe_flv04oy^n&$mff0vzew^%altefhx@$%_o_g='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'devsearch-dj.herokuapp.com']
 
@@ -223,7 +223,7 @@ MEDIA_URL = '/images/'
 
 #added to find static folder
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')  #old Django version
+    BASE_DIR, 'static'  #old Django version
     #BASE_DIR / 'static'  #new django version
 
 ]
@@ -231,7 +231,8 @@ STATICFILES_DIRS = [
 CLOUDINARY_STORAGE={ 
 'CLOUD_NAME':os.environ.get('CLOUD_NAME', None), 
 'API_KEY':  os.environ.get('CLOUDAPI_KEY', None) , 
-'API_SECRET': os.environ.get('CLOUDAPI_SECRET', None) 
+'API_SECRET': os.environ.get('CLOUDAPI_SECRET', None),
+'STATICFILES_MANIFEST_ROOT': os.path.join(BASE_DIR, 'my-manifest-directory') 
     }
 
 #added to send download images to a specific folder
@@ -251,7 +252,7 @@ STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+#DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
 if os.getcwd()== '/app':
