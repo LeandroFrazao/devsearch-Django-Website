@@ -38,6 +38,7 @@ class Profile(models.Model):
             url = self.profile_image.url
         except:
             url = settings.MEDIA_URL+"default.jpg"
+            print(url)
         return url
 
 
