@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 import uuid
 from uuid import uuid4
 from django.conf import settings
+import os
 # Create your models here.
 
 
@@ -37,8 +38,12 @@ class Profile(models.Model):
         try:
             url = self.profile_image.url
         except:
-            url = settings.MEDIA_URL+"default.jpg"
-            print(url)
+            if os.getcwd()== '/app':
+                url = 	"http://res.cloudinary.com/"+settings.CLOUDINARY_STORAGE('CLOUD_NAME')+"default.jpg"
+                print(url)
+            else:
+                url = settings.MEDIA_URL+"default.jpg"
+           
         return url
 
 
