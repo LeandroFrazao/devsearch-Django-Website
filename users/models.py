@@ -39,10 +39,12 @@ class Profile(models.Model):
             url = self.profile_image.url
         except:
             if os.getcwd()== '/app':
-                url = 	"http://res.cloudinary.com/"+settings.CLOUDINARY_STORAGE('CLOUD_NAME')+"default.jpg"
+                url = 	"http://res.cloudinary.com/"+settings.CLOUDINARY_STORAGE.get('CLOUD_NAME')+"/images/"+"default.jpg"
                 print(url)
             else:
-                url = settings.MEDIA_URL+"default.jpg"
+                url = 	"http://res.cloudinary.com/"+settings.CLOUDINARY_STORAGE.get('CLOUD_NAME')+"/images/"+"default.jpg"
+                print(url)
+                #url = settings.MEDIA_URL+"default.jpg"
            
         return url
 
