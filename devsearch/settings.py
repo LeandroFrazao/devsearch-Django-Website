@@ -232,7 +232,8 @@ CLOUDINARY_STORAGE={
 'CLOUD_NAME':os.environ.get('CLOUD_NAME', None), 
 'API_KEY':  os.environ.get('CLOUDAPI_KEY', None) , 
 'API_SECRET': os.environ.get('CLOUDAPI_SECRET', None),
-'STATICFILES_MANIFEST_ROOT': os.path.join(BASE_DIR, 'manifest') 
+'STATICFILES_MANIFEST_ROOT': os.path.join(BASE_DIR, 'manifest'),
+ 'PREFIX': MEDIA_URL 
     }
 
 #added to send download images to a specific folder
