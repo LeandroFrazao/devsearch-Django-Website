@@ -15,7 +15,6 @@ import os
 from datetime import timedelta
 from telnetlib import STATUS
 
-import cloudinary
 from dotenv import  load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -133,24 +132,24 @@ WSGI_APPLICATION = 'devsearch.wsgi.application'
 #load env var 
 #dotenv_path  to set the path of .env file
 
-if os.getcwd()!= '/app':
-    load_dotenv(dotenv_path= os.path.join(BASE_DIR,'env','.env'))
 
-    DATABASE_HOST_NAME = os.environ.get('DBHKNAME', None)
-    DATABASE_HOST_USER = os.environ.get('DBHKUSER', None)
-    DATABASE_HOST_PASS = os.environ.get('DBHKPASS', None)
-    DATABASE_HOST_URL = os.environ.get('DBHKHOST', None)
+load_dotenv(dotenv_path= os.path.join(BASE_DIR,'env','.env'))
 
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': DATABASE_HOST_NAME,
-            'USER':DATABASE_HOST_USER,
-            'PASSWORD': DATABASE_HOST_PASS,
-            'HOST':DATABASE_HOST_URL,
-            'PORT':'5432',
-        }
+DATABASE_HOST_NAME = os.environ.get('DBHKNAME', None)
+DATABASE_HOST_USER = os.environ.get('DBHKUSER', None)
+DATABASE_HOST_PASS = os.environ.get('DBHKPASS', None)
+DATABASE_HOST_URL = os.environ.get('DBHKHOST', None)
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': DATABASE_HOST_NAME,
+        'USER':DATABASE_HOST_USER,
+        'PASSWORD': DATABASE_HOST_PASS,
+        'HOST':DATABASE_HOST_URL,
+        'PORT':'5432',
     }
+}
 
 #DATABASE_HOST_PASS = os.environ.get('DBPASS', None)
 # DATABASES = {
@@ -224,23 +223,23 @@ MEDIA_URL = '/images/'
 
 #added to find static folder
 STATICFILES_DIRS = [
-   # os.path.join(BASE_DIR, 'static')  #old Django version
-    BASE_DIR / 'static'  #new django version
+    os.path.join(BASE_DIR, 'static')  #old Django version
+    #BASE_DIR / 'static'  #new django version
 
 ]
-if os.getcwd()!= '/app':
-    CLOUDINARY_STORAGE={ 
-    'CLOUD_NAME':os.environ.get('CLOUD_NAME', None), 
-    'API_KEY':  os.environ.get('CLOUDAPI_KEY', None) , 
-    'API_SECRET': os.environ.get('CLOUDAPI_SECRET', None) 
+
+CLOUDINARY_STORAGE={ 
+'CLOUD_NAME':os.environ.get('CLOUD_NAME', None), 
+'API_KEY':  os.environ.get('CLOUDAPI_KEY', None) , 
+'API_SECRET': os.environ.get('CLOUDAPI_SECRET', None) 
     }
 
 #added to send download images to a specific folder
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
-MEDIA_ROOT = BASE_DIR / 'static/images'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 
 #added to set the folder of static files when in production
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
@@ -255,5 +254,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
-if os.getcwd()== '/app':
-    DEBUG = False
+# if os.getcwd()== '/app':
+#     DEBUG = False
