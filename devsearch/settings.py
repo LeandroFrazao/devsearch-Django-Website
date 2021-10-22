@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 from datetime import timedelta
-from telnetlib import STATUS
 
 from dotenv import  load_dotenv
 
@@ -33,7 +32,6 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'devsearch-dj.herokuapp.com']
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -58,8 +56,8 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(hours=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(hours=6),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': False,
     'UPDATE_LAST_LOGIN': False,
@@ -83,8 +81,8 @@ SIMPLE_JWT = {
     'JTI_CLAIM': 'jti',
 
     'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
-    'SLIDING_TOKEN_LIFETIME': timedelta(hours=5),
-    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+    'SLIDING_TOKEN_LIFETIME': timedelta(hours=1),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(hours=6),
 }
 
 MIDDLEWARE = [
@@ -130,8 +128,6 @@ WSGI_APPLICATION = 'devsearch.wsgi.application'
 
 #load env var 
 #dotenv_path  to set the path of .env file
-
-
 load_dotenv(dotenv_path= os.path.join(BASE_DIR,'env','.env'))
 
 DATABASE_HOST_NAME = os.environ.get('DBHKNAME', None)
@@ -211,7 +207,6 @@ EMAIL_HOST_USER = os.environ.get('APIEMAIL', None)
 EMAIL_HOST_PASSWORD = os.environ.get('APIPASS', None)
 
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
@@ -254,6 +249,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+#To use cloudinary. If want to use local images, comment it.
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 

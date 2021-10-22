@@ -110,14 +110,23 @@ def userAccount(request):
 def editAccount(request):
     profile = request.user.profile
     form = ProfileForm(instance = profile)
+   
 
     if request.method == 'POST':
+        
         form = ProfileForm(request.POST, request.FILES, instance = profile)
         if form.is_valid():
-            form.save()
-
-            return redirect('account')
-
+            form.save(commit = False)
+            try:
+                
+                form.save()
+                return redirect('account')
+            except:
+                messages.error(request, 'An error has occurred during registration.')
+        else:
+            for field, msg in form.errors.items():
+                messages.error(request, form.errors.get(field))
+                         
     context ={'form':form}
     return render(request, 'users/profile_form.html', context)
 

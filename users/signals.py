@@ -10,6 +10,7 @@ from .models import Profile
 from django.core.mail import send_mail
 from django.conf import settings
 
+
 ##other way to trigger the signal
 #@receiver(post_save, sender=Profile)
 def createProfile(sender, instance, created,**kwargs):
@@ -36,6 +37,7 @@ def createProfile(sender, instance, created,**kwargs):
 def updateUser(sender, instance, created, **kwargs):
     profile = instance
     user = profile.user
+   
     if created == False:
         user.first_name = profile.name
         user.username = profile.username

@@ -45,3 +45,9 @@ def searchProjects(request):
     )
 
     return projects, search_query
+
+
+def uploadPath(self):
+    userPath = str(self.id)+"/profile/"
+    print("userPath",userPath)
+    return userPath
